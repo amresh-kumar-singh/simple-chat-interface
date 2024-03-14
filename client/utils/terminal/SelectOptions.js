@@ -58,7 +58,7 @@ export default class {
           break;
         }
       case "return":
-        output.write(ansiEraseLine(this.options.length + 2));
+        output.write(ansiEraseLine(this.options.length + 3));
         output.write("\n");
         input.setRawMode(false);
         input.off("keypress", this.onKeyPressHandler);

@@ -8,7 +8,6 @@ let ID = 1;
 
 // This will send message to all user in given room but not the sender
 const broadcastMessage = (message, senderSocket, room) => {
-  console.log("broadcase", room, Object.keys(ROOMS));
   ROOMS[room].forEach((client) => {
     if (client !== senderSocket) {
       client.write(message);
@@ -47,7 +46,6 @@ const server = net.createServer((socket) => {
           msgObj.room = "room" + ID++;
           ROOMS[msgObj.room] = [socket];
           msgObj.isNewlyCreatedRoom = true;
-          console.log(room, Object.keys(ROOMS));
           msgObj.allRooms = Object.keys(ROOMS);
         } else {
           // If user is joining already existing rooms
@@ -75,7 +73,7 @@ const server = net.createServer((socket) => {
       const index = ROOMS[currentRoomName].indexOf(socket);
       if (index !== -1) ROOMS[currentRoomName].splice(index, 1);
     }
-    console.log("Socket Ended!", currentRoomName, ROOMS);
+    console.log("Socket Ended!", currentRoomName);
   });
 });
 

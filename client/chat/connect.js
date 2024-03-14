@@ -13,12 +13,11 @@ const connect = ({ host, port, roomOptions }) => {
     {
       port,
       host,
-      message: roomOptions.options[roomOptions.selectedIndex],
       keepAlive: true,
     },
     () => {
       // Clear previous messages
-      output.write(ansiEraseLine(3) + "\n");
+      output.write(ansiEraseLine(4) + "\n");
 
       // Showing app name
       console.log(ansiColors(BORDER));
@@ -85,7 +84,12 @@ const connect = ({ host, port, roomOptions }) => {
   });
 
   client.on("error", (error) => {
-    console.log("Error: ", error);
+    if (error.code === "ECONNRESET") {
+      console.log("Closing app due to inactivity!");
+      process.emit("SIGINT");
+    } else {
+      console.log("Error: ", error);
+    }
   });
 
   client.on("end", () => {
